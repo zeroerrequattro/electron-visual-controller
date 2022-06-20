@@ -20,18 +20,18 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      display: none;
       height: 100%;
       background: transparent 50% 50% / cover no-repeat;
       transform: translate(-50%,-50%);
-      transition: opacity 15s linear;
+      /* transition: opacity 15s linear; */
     }
   </style>
   <script src="./renderer.js"></script>
-  <script src="./service.js"></script>
   <script data-json type="json/template"></script>
 </head>
 <body style="-webkit-app-region: nodrag;">
   <video class="contain" autoplay muted loop playsinline></video>
-  <!-- <div class="contain"></div> -->
+  <div class="image contain"></div>
 </body>
 </html>

@@ -1,9 +1,10 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, screen, ipcMain } = require('electron')
+const { app, BrowserWindow, screen, webContents } = require('electron')
 const lt = require('localtunnel')
+const { ipcMainHandler } = require('./ipcMainHandler')
 const { webInit } = require('./web')
 
-const createWindow = () => {
+const createWindow = async () => {
   const primaryDisplay = screen.getPrimaryDisplay()
   
   // Create the browser window.
@@ -39,6 +40,8 @@ const createWindow = () => {
 
   // Open the DevTools.
   win.webContents.openDevTools()
+
+  return win
 }
 
 // This method will be called when Electron has finished
@@ -46,12 +49,14 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   await webInit()
-  createWindow()
+  const win = await createWindow()
   const tunnel = await lt({
     port: 12627,
     subdomain: 'top-layer-app'
   })
-  console.log(tunnel.url)
+  win.webContents.send('tunnel:init', tunnel.url)
+  win.show()
+  // ipcMainHandler()
   // process.platform === 'darwin' && app.dock.hide()
 })
 

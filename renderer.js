@@ -1,6 +1,9 @@
 let i = 0
 const cycleImages = async () => {
-  const images = JSON.parse(document.querySelector('[data-json]').innerText)
+  const dataJson = document.querySelector('[data-json]').innerText
+  if(!dataJson) { return }
+  
+  const images = JSON.parse(dataJson)
   const container = document.querySelector('video.contain')
   container.setAttribute('src',images[i])
   // container.style.opacity = 0
