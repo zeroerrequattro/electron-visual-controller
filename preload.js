@@ -4,11 +4,10 @@ ipcRenderer.on('tunnel:init', (event, args) => {
   console.log(args)
 })
 
-ipcRenderer.on('tunnel:request', (event, { body, files }) => {
-  const { type, path } = files.file
+ipcRenderer.on('tunnel:request', (event, { body, files: { file } }) => {
+  const { type, path } = file
   const [ fileType, ext ] = type.split('/')
-
-  console.log(type, fileType, ext)
+  const unixPath = path.replace(/\\/g,'/')
 
   document.querySelectorAll('.contain').forEach(c => {
     c.style.display = 'none'
@@ -17,12 +16,12 @@ ipcRenderer.on('tunnel:request', (event, { body, files }) => {
   switch (fileType) {
     case 'image':
       const imgContain = document.querySelector('.image.contain')
-      imgContain.style.backgroundImage = `url(${path})`
+      imgContain.style.backgroundImage = `url(${unixPath})`
       imgContain.style.display = 'block'
       break
     case 'video':
       const videoContain = document.querySelector('video.contain')
-      videoContain.setAttribute('src', path)
+      videoContain.setAttribute('src', unixPath)
       videoContain.style.display = 'block'
       break
   }
