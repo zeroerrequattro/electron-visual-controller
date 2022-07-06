@@ -1,0 +1,27 @@
+* {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+.contain {
+  display: none;
+}
+video.contain {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  transform: translate(-50%,-50%);
+  /* transition: opacity 15s linear; */
+}
+.image.contain {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: transparent 50% 50% / cover no-repeat;
+}
