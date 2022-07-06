@@ -10,8 +10,8 @@ const port = 12627
 const router = express.Router()
 const static = express.static(joinPath('/public'))
 const options = {
-  uploadDir: os.tmpdir(),
-  autoClean: true
+  uploadDir: joinPath('/temp'),
+  autoClean: false
 }
 
 // app.use(express.json())

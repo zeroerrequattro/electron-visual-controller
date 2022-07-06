@@ -50,11 +50,11 @@ const createWindow = async () => {
 app.whenReady().then(async () => {
   await webInit()
   const win = await createWindow()
-  // const tunnel = await lt({
-  //   port: 12627,
-  //   subdomain: 'top-layer-app'
-  // })
-  // win.webContents.send('tunnel:init', tunnel.url)
+  const tunnel = await lt({
+    port: 12627,
+    subdomain: 'top-layer-app'
+  })
+  win.webContents.send('tunnel:init', tunnel.url)
   win.show()
   // ipcMainHandler()
   // process.platform === 'darwin' && app.dock.hide()
