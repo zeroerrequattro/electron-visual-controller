@@ -22,4 +22,15 @@
       submitButton.removeAttribute('disabled')
     })
   })
+
+  document.querySelectorAll('button.request').forEach(r => {
+    r.addEventListener('click', ({ currentTarget }) => {
+      const req = currentTarget.getAttribute('data-target')
+      fetch(req, {
+        method: 'POST',
+      }).finally(() => {
+        window.close()
+      })
+    })
+  })
 })()

@@ -1,14 +1,11 @@
 const express = require('express')
 const formData = require('express-form-data')
-const fs = require('fs')
-const path = require('path')
 const { webContents } = require('electron')
+const { tempDir, cleanDir, joinPath } = require('./utils')
 
-const joinPath = string => path.join(`${__dirname}${string}`)
 const app = express()
 const port = 12627
 const router = express.Router()
-const tempDir = joinPath('/temp')
 const static = express.static(joinPath('/public'))
 const options = {
   uploadDir: tempDir,
@@ -28,18 +25,10 @@ app.get('/', (req, res) => {
 
 app.post('/', formData.parse(options), (req, res) => {
   const { body, files } = req
-  const { name, path } = files.file
+  const { path: filePath } = files.file
   const allWC = webContents.getAllWebContents()
-  const tempFiles = fs.readdirSync(tempDir)
-  const currentFile = path.replace(tempDir,'').substr(1)
 
-  tempFiles.forEach(tempFile => {
-    if (tempFile === currentFile) {
-      return
-    }
-
-    fs.unlinkSync(`${tempDir}/${tempFile}`)
-  })
+  cleanDir(filePath)
 
   allWC.forEach(webContent => {
     webContent.send('tunnel:request', { body, files })
@@ -49,6 +38,27 @@ app.post('/', formData.parse(options), (req, res) => {
     status: 'ok',
     body,
     files,
+  })
+})
+
+app.post('/open', () => {
+  const allWC = webContents.getAllWebContents()
+  allWC.forEach(webContent => {
+    webContent.send('tunnel:open')
+  })
+})
+
+app.post('/close', () => {
+  const allWC = webContents.getAllWebContents()
+  allWC.forEach(webContent => {
+    webContent.send('tunnel:close')
+  })
+})
+
+app.post('/quit', () => {
+  const allWC = webContents.getAllWebContents()
+  allWC.forEach(webContent => {
+    webContent.send('tunnel:quit')
   })
 })
 

@@ -1,8 +1,13 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, screen } = require('electron')
+const { app, BrowserWindow, screen, ipcMain } = require('electron')
 const lt = require('localtunnel')
-const { ipcMainHandler } = require('./ipcMainHandler')
+const { cleanDir } = require('./utils')
 const { webInit } = require('./web')
+
+const cleanQuit = () => {
+  cleanDir()
+  app.quit()
+}
 
 const createWindow = async () => {
   const primaryDisplay = screen.getPrimaryDisplay()
@@ -56,14 +61,9 @@ app.whenReady().then(async () => {
   })
   win.webContents.send('tunnel:init', tunnel.url)
   win.show()
-  // ipcMainHandler()
+  ipcMain.on('tunnel:open', win.show)
   // process.platform === 'darwin' && app.dock.hide()
 })
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', app.quit)
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// app.on('window-all-closed', cleanQuit)
+ipcMain.on('tunnel:quit', cleanQuit)

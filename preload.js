@@ -1,7 +1,19 @@
 const { ipcRenderer } = require('electron')
-
+ 
 ipcRenderer.on('tunnel:init', (event, args) => {
   console.log(args)
+})
+
+ipcRenderer.on('tunnel:open', () => {
+  ipcRenderer.send('tunnel:open')
+})
+
+ipcRenderer.on('tunnel:close', () => {
+  window.close()
+})
+
+ipcRenderer.on('tunnel:quit', () => {
+  ipcRenderer.send('tunnel:quit')
 })
 
 ipcRenderer.on('tunnel:request', (event, { body, files: { file } }) => {
