@@ -19,32 +19,32 @@ const createWindow = async () => {
     x: 0,
     y: 0,
     show: false,
-    // frame: false,
-    // opacity: .02,
-    // backgroundColor: '#00FFFFFF',
-    // transparent: true,
-    // resizable: false,
-    // movable: false,
-    // focusable: false,
-    // autoHideMenuBar: true,
-    // alwaysOnTop: true,
-    // fullscreenable: false,
-    // hasShadow: false,
-    // roundedCorners: false,
-    // thickFrame: false,
+    frame: false,
+    opacity: .5,
+    backgroundColor: '#00FFFFFF',
+    transparent: true,
+    resizable: false,
+    movable: false,
+    focusable: false,
+    autoHideMenuBar: true,
+    alwaysOnTop: true,
+    fullscreenable: false,
+    hasShadow: false,
+    roundedCorners: false,
+    thickFrame: false,
     webPreferences: {
       preload: `${__dirname}/preload.js`
     }
   })
 
-  // win.setIgnoreMouseEvents(true)
-  // win.setSkipTaskbar(true)
+  win.setIgnoreMouseEvents(true)
+  win.setSkipTaskbar(true)
 
   // and load the index.html of the app.
   win.loadFile(`${__dirname}/index.html`)
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   return win
 }
@@ -61,11 +61,10 @@ app.whenReady().then(async () => {
   })
   win.webContents.send('tunnel:init', tunnel.url)
   win.show()
-  // process.platform === 'darwin' && app.dock.hide()
-  ipcMain.on('tunnel:close', () => { win.hide() })
-  ipcMain.on('tunnel:open', () => { win.show() })
+  process.platform === 'darwin' && app.dock.hide()
+  ipcMain.on('tunnel:hide', () => { win.hide() })
+  ipcMain.on('tunnel:show', () => { win.show() })
 })
-
 
 // app.on('window-all-closed', cleanQuit)
 ipcMain.on('tunnel:quit', cleanQuit)
