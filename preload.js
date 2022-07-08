@@ -9,7 +9,7 @@ ipcRenderer.on('tunnel:open', () => {
 })
 
 ipcRenderer.on('tunnel:close', () => {
-  window.close()
+  ipcRenderer.send('tunnel:close')
 })
 
 ipcRenderer.on('tunnel:quit', () => {

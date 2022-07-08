@@ -31,3 +31,7 @@ button {
 button[type="submit"] {
   padding: .5rem .25rem;
 }
+
+.hidden {
+  display: none;
+}

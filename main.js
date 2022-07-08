@@ -61,9 +61,11 @@ app.whenReady().then(async () => {
   })
   win.webContents.send('tunnel:init', tunnel.url)
   win.show()
-  ipcMain.on('tunnel:open', win.show)
   // process.platform === 'darwin' && app.dock.hide()
+  ipcMain.on('tunnel:close', () => { win.hide() })
+  ipcMain.on('tunnel:open', () => { win.show() })
 })
+
 
 // app.on('window-all-closed', cleanQuit)
 ipcMain.on('tunnel:quit', cleanQuit)
