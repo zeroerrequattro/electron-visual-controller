@@ -41,17 +41,17 @@ app.post('/', formData.parse(options), (req, res) => {
   })
 })
 
-app.post('/open', () => {
+app.post('/show', () => {
   const allWC = webContents.getAllWebContents()
   allWC.forEach(webContent => {
-    webContent.send('tunnel:open')
+    webContent.send('tunnel:show')
   })
 })
 
-app.post('/close', () => {
+app.post('/hide', () => {
   const allWC = webContents.getAllWebContents()
   allWC.forEach(webContent => {
-    webContent.send('tunnel:close')
+    webContent.send('tunnel:hide')
   })
 })
 

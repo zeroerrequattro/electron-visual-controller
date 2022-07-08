@@ -4,19 +4,19 @@ ipcRenderer.on('tunnel:init', (event, args) => {
   console.log(args)
 })
 
-ipcRenderer.on('tunnel:open', () => {
-  ipcRenderer.send('tunnel:open')
+ipcRenderer.on('tunnel:show', () => {
+  ipcRenderer.send('tunnel:show')
 })
 
-ipcRenderer.on('tunnel:close', () => {
-  ipcRenderer.send('tunnel:close')
+ipcRenderer.on('tunnel:hide', () => {
+  ipcRenderer.send('tunnel:hide')
 })
 
 ipcRenderer.on('tunnel:quit', () => {
   ipcRenderer.send('tunnel:quit')
 })
 
-ipcRenderer.on('tunnel:request', (event, { body, files: { file } }) => {
+ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } }) => {
   const { type, path } = file
   const [ fileType, ext ] = type.split('/')
   const unixPath = path.replace(/\\/g,'/')
@@ -30,11 +30,13 @@ ipcRenderer.on('tunnel:request', (event, { body, files: { file } }) => {
       const imgContain = document.querySelector('.image.contain')
       imgContain.style.backgroundImage = `url(${unixPath})`
       imgContain.style.display = 'block'
+      imgContain.style.opacity = opacity
       break
     case 'video':
       const videoContain = document.querySelector('video.contain')
       videoContain.setAttribute('src', unixPath)
       videoContain.style.display = 'block'
+      videoContain.style.opacity = opacity
       break
   }
 })

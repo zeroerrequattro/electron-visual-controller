@@ -25,22 +25,25 @@
 
   const toggles = document.querySelectorAll('button.toggle')
   toggles.forEach(t => {
-    console.log(t)
     t.addEventListener('click', ({ currentTarget }) => {
       const toggle = currentTarget.getAttribute('data-toggle')
-      console.log(toggle)
-
       toggles.forEach(tt => {
         const toggleCompare = tt.getAttribute('data-toggle')
-        console.log(toggleCompare)
-
         if ( toggle !== toggleCompare ) {
           return
         }
+
         tt.classList.toggle('hidden')
       })
     })
   })
+
+  document.querySelector('input[type="range"]')
+    .addEventListener('change', ({ currentTarget }) => {
+      const { value } = currentTarget
+      const target = currentTarget.getAttribute('id')
+      document.querySelector(`label[for="${target}"] > [data-value]`).innerText = value
+    })
 
   document.querySelectorAll('button.request').forEach(r => {
     r.addEventListener('click', ({ currentTarget }) => {
