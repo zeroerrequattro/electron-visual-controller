@@ -37,15 +37,18 @@ label {
 
 input,
 button {
-  width: 100%;
   margin: .5rem 0;
-  padding: .5rem;
+  padding: .5rem 1rem;
   border-width: 1px;
   border-radius: .25rem;
 }
 
 button[type="submit"] {
   padding: .5rem .25rem;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .hidden {
@@ -58,4 +61,8 @@ button[type="submit"] {
 
 .items-center {
   align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }

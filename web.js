@@ -41,24 +41,17 @@ app.post('/', formData.parse(options), (req, res) => {
   })
 })
 
-app.post('/show', () => {
+app.post('/send/:request', async (req, res) => {
   const allWC = webContents.getAllWebContents()
-  allWC.forEach(webContent => {
-    webContent.send('tunnel:show')
-  })
-})
+  const { request } = req.params
 
-app.post('/hide', () => {
-  const allWC = webContents.getAllWebContents()
   allWC.forEach(webContent => {
-    webContent.send('tunnel:hide')
+    webContent.send(`tunnel:${request}`)
   })
-})
 
-app.post('/quit', () => {
-  const allWC = webContents.getAllWebContents()
-  allWC.forEach(webContent => {
-    webContent.send('tunnel:quit')
+  res.json({
+    code: 200,
+    status: 'ok',
   })
 })
 

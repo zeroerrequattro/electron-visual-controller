@@ -18,12 +18,22 @@
       method: 'POST',
       body: formData
     })
+    .then(r => r.json())
+    .then(r => {
+      const { files: { file: { type }}} = r
+      const videoPlayer = document.querySelector('.video-player')
+      if (type.includes('video')) {
+        videoPlayer.classList.remove('hidden')
+      } else {
+        videoPlayer.classList.add('hidden')
+      }
+    })
     .finally(res => {
       submitButton.removeAttribute('disabled')
     })
   })
 
-  const toggles = document.querySelectorAll('button.toggle')
+  const toggles = document.querySelectorAll('button[data-toggle]')
   toggles.forEach(t => {
     t.addEventListener('click', ({ currentTarget }) => {
       const toggle = currentTarget.getAttribute('data-toggle')
@@ -45,10 +55,15 @@
       document.querySelector(`label[for="${target}"] > [data-value]`).innerText = value
     })
 
-  document.querySelectorAll('button.request').forEach(r => {
+  document.querySelectorAll('button[data-request]').forEach(r => {
     r.addEventListener('click', ({ currentTarget }) => {
-      const req = currentTarget.getAttribute('data-target')
-      fetch(req, {
+      const req = currentTarget.getAttribute('data-request')
+      if(!req) {
+        console.log('no request available')
+        return
+      }
+
+      fetch(`/send/${req}`, {
         method: 'POST',
       }).finally(() => {
         window.close()
