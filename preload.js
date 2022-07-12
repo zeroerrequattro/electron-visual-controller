@@ -16,6 +16,28 @@ ipcRenderer.on('tunnel:quit', () => {
   ipcRenderer.send('tunnel:quit')
 })
 
+ipcRenderer.on('tunnel:video-play', () => {
+  const video = document.querySelector('video')
+  video.play()
+})
+
+ipcRenderer.on('tunnel:video-pause', () => {
+  const video = document.querySelector('video')
+  video.pause()
+})
+
+ipcRenderer.on('tunnel:video-stop', () => {
+  const video = document.querySelector('video')
+  video.pause()
+  video.currentTime = 0
+})
+
+ipcRenderer.on('tunnel:opacity', (event, { value }) => {
+  document.querySelectorAll('.contain').forEach(c => {
+    c.style.opacity = value
+  })
+})
+
 ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } }) => {
   const { type, path } = file
   const [ fileType, ext ] = type.split('/')
