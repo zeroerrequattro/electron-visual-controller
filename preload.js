@@ -32,10 +32,13 @@ ipcRenderer.on('tunnel:video-stop', () => {
   video.currentTime = 0
 })
 
-ipcRenderer.on('tunnel:opacity', (event, { value }) => {
-  document.querySelectorAll('.contain').forEach(c => {
-    c.style.opacity = value
-  })
+ipcRenderer.on('tunnel:video-opacity', (e, { value }) => {
+  document.querySelector('video.contain').style.opacity = value
+})
+
+ipcRenderer.on('tunnel:video-speed', (e, { value }) => {
+  const video = document.querySelector('video')
+  video.playbackRate = value
 })
 
 ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } }) => {

@@ -59,6 +59,14 @@ button[type="submit"] {
   display: flex;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.mr-2 {
+  margin-right: 1rem;
+}
+
 .items-center {
   align-items: center;
 }

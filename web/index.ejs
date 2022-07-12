@@ -18,28 +18,46 @@
         <button class="w-full" type="submit">Submit</button>
       </form>
       <hr>
-      <div class="video-player hidden">
-        <div class="flex justify-between items-center">
-          <button class="hidden" data-toggle="video" data-request="video-play" value="video-play">Play Video</button>
-          <button data-toggle="video" data-request="video-pause">Pause Video</button>
-          <button data-request="video-stop" value="video-stop">Stop Video</button>
+      <div class="video-player controls hidden">
+        <div class="flex flex-wrap  items-center">
+          <button class="hidden mr-2" data-toggle="video" data-request="video-play" value="video-play">Play Video</button>
+          <button class="mr-2" data-toggle="video" data-request="video-pause">Pause Video</button>
+          <button class="mr-2" data-request="video-stop" value="video-stop">Stop Video</button>
           <div class="flex items-center">
-            <label class="label" for="opacity">
+            <label class="label" for="video-speed">
+              Speed:
+              <span data-value>1</span>
+            </label>
+            <input
+              class="w-full"
+              type="range"
+              name="speed"
+              min="0.25"
+              max="2"
+              step="0.25"
+              value="1"
+              id="video-speed"
+              data-request="video-speed">
+          </div>
+          <div class="flex items-center w-full">
+            <label class="label" for="video-opacity">
               Opacity:
               <span data-value>0.05</span>
             </label>
             <input
+              class="w-full"
               type="range"
               name="opacity"
               min="0"
               max="1"
               step="0.05"
               value="0.05"
-              id="opacity"
-              data-request="opacity">
+              id="video-opacity"
+              data-request="video-opacity">
           </div>
         </div>
       </div>
+      <div></div>
       <button type="button" class="w-full" data-toggle="window" data-request="hide" value="hide">Hide window</button>
       <button type="button" class="hidden w-full" data-toggle="window" data-request="show" value="show">Show window</button>
       <button type="button" class="w-full" data-request="quit" value="quit">Quit</button>
