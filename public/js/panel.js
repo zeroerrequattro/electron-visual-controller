@@ -3,8 +3,19 @@
   const submitButton = form.querySelector('button[type="submit"]')
   const data = {}
 
+  const resetPanel = () => {
+    document.querySelectorAll('.controls').forEach(c => {
+      c.classList.add('hidden')
+    })
+    document.querySelector('button[data-request="video-pause"]').classList.remove('hidden')
+    document.querySelector('button[data-request="video-play"]').classList.add('hidden')
+    document.querySelector('input[data-request="video-opacity"]').value = 0.05
+    document.querySelector('input[data-request="video-speed"]').value = 1
+  }
+
   form.addEventListener('submit', e => {
     e.preventDefault()
+    resetPanel()
 
     const formData = new FormData(e.currentTarget)
 
