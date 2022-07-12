@@ -55,19 +55,35 @@
       document.querySelector(`label[for="${target}"] > [data-value]`).innerText = value
     })
 
-  document.querySelectorAll('button[data-request]').forEach(r => {
-    r.addEventListener('click', ({ currentTarget }) => {
-      const req = currentTarget.getAttribute('data-request')
-      if(!req) {
-        console.log('no request available')
-        return
-      }
-
-      fetch(`/send/${req}`, {
-        method: 'POST',
-      }).finally(() => {
-        window.close()
-      })
+  document.querySelector('button[data-request="video-stop"]')
+    .addEventListener('click', () => {
+      document.querySelector('button[data-request="video-pause"]').classList.add('hidden')
+      document.querySelector('button[data-request="video-play"]').classList.remove('hidden')
     })
+
+  const sendRequest = async ({ currentTarget }) => {
+    const req = currentTarget.getAttribute('data-request')
+    const { value } = currentTarget
+  
+    if(!req) {
+      console.log('no request available')
+      return
+    }
+
+    await fetch(`/send/${req}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ value })
+    })
+      // .then(r => r.json())
+      // .then(r => console.log(r))
+  }
+
+  document.querySelectorAll('[data-request]').forEach(r => {
+    r.addEventListener('click', sendRequest)
+    // r.addEventListener('change', sendRequest)
   })
 })()

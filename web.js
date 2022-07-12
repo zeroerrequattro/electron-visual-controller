@@ -12,8 +12,7 @@ const options = {
   autoClean: false
 }
 
-// app.use(express.json())
-app.use(formData.parse(options))
+app.use(express.json())
 app.use('/static', static)
 app.use('/', router)
 
@@ -41,17 +40,19 @@ app.post('/', formData.parse(options), (req, res) => {
   })
 })
 
-app.post('/send/:request', async (req, res) => {
+app.post('/send/:request', (req, res) => {
   const allWC = webContents.getAllWebContents()
+  const { body } = req
   const { request } = req.params
 
   allWC.forEach(webContent => {
-    webContent.send(`tunnel:${request}`)
+    webContent.send(`tunnel:${request}`, body)
   })
 
   res.json({
     code: 200,
     status: 'ok',
+    body,
   })
 })
 
