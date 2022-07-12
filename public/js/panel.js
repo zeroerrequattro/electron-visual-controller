@@ -32,11 +32,11 @@
     .then(r => r.json())
     .then(r => {
       const { files: { file: { type }}} = r
-      const videoPlayer = document.querySelector('.video-player')
       if (type.includes('video')) {
-        videoPlayer.classList.remove('hidden')
-      } else {
-        videoPlayer.classList.add('hidden')
+        document.querySelector('.video-player').classList.remove('hidden')
+      }
+      if (type.includes('image')) {
+        document.querySelector('.image-player').classList.remove('hidden')
       }
     })
     .finally(res => {
