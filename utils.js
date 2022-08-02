@@ -1,10 +1,10 @@
 const fs = require('fs')
-const crypto = require('crypto')
 const path = require('path')
+const lt = require('localtunnel')
 
 const joinPath = string => path.join(`${__dirname}${string}`)
 
-const tempDir = joinPath('/temp')
+const tempDir = joinPath('/public/temp')
 
 const cleanDir = excludeFilePath => {
   const tempFiles = fs.readdirSync(tempDir)
@@ -19,8 +19,14 @@ const cleanDir = excludeFilePath => {
   })
 }
 
+const tunnelInit = async () => await lt({
+  port: 12627,
+  subdomain: 'top-layer-app'
+})
+
 module.exports = {
     tempDir,
     cleanDir, 
     joinPath,
+    tunnelInit,
 }

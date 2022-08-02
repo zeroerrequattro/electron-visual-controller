@@ -1,7 +1,6 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, screen, ipcMain } = require('electron')
-const lt = require('localtunnel')
-const { cleanDir } = require('./utils')
+const { app, BrowserWindow, screen, ipcMain, powerMonitor } = require('electron')
+const { cleanDir, tunnelInit } = require('./utils')
 const { webInit } = require('./web')
 
 const cleanQuit = () => {
@@ -55,15 +54,19 @@ const createWindow = async () => {
 app.whenReady().then(async () => {
   await webInit()
   const win = await createWindow()
-  const tunnel = await lt({
-    port: 12627,
-    subdomain: 'top-layer-app'
-  })
-  win.webContents.send('tunnel:init', tunnel.url)
+  let tunnel = await tunnelInit()
+  // win.webContents.send('tunnel:init', tunnel.url)
   win.show()
   process.platform === 'darwin' && app.dock.hide()
   ipcMain.on('tunnel:hide', () => { win.hide() })
   ipcMain.on('tunnel:show', () => { win.show() })
+
+  powerMonitor.on('suspend', tunnel.close)
+  powerMonitor.on('resume', async () => {
+    cleanDir()
+    tunnel = await tunnelInit()
+  })
+  powerMonitor.on('shutdown', cleanQuit)
 })
 
 // app.on('window-all-closed', cleanQuit)
