@@ -19,21 +19,27 @@
       </form>
       <hr>
       <div class="image-player controls hidden">
-        <div class="flex items-center w-full">
-          <label class="label" for="image-opacity">
-            Opacity:
-            <span data-value>0.05</span>
-          </label>
-          <input
-            class="w-full"
-            type="range"
-            name="opacity"
-            min="0"
-            max="1"
-            step="0.05"
-            value="0.05"
-            id="image-opacity"
-            data-request="image-opacity">
+        <div class="flex items-start w-full">
+          <div class="image-preview w-half">
+            <img class="preview" src="">
+            <div class="position-select"></div>
+          </div>
+          <div class="image-controls w-half">
+            <label class="label" for="image-opacity">
+              Opacity:
+              <span data-value>0.05</span>
+            </label>
+            <input
+              class="w-full"
+              type="range"
+              name="opacity"
+              min="0"
+              max="1"
+              step="0.05"
+              value="0.05"
+              id="image-opacity"
+              data-request="image-opacity">
+          </div>
         </div>
       </div>
       <div class="video-player controls hidden">

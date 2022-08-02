@@ -24,6 +24,8 @@
     }
 
     submitButton.setAttribute('disabled', true)
+    submitButton.classList.add('loading')
+    submitButton.innerText = 'Loading'
 
     fetch('/', {
       method: 'POST',
@@ -31,16 +33,61 @@
     })
     .then(r => r.json())
     .then(r => {
-      const { files: { file: { type }}} = r
+      const { files: { file: { type, path }}} = r
+      const [ currentFilename ] = path.split('/').splice(-1,1)
+
       if (type.includes('video')) {
         document.querySelector('.video-player').classList.remove('hidden')
       }
+
       if (type.includes('image')) {
         document.querySelector('.image-player').classList.remove('hidden')
+        const imagePreview = document.querySelector('img.preview')
+        imagePreview.src = `/static/temp/${currentFilename}`
+        const positionSelect = 
+        document.querySelector('.position-select')
+
+        positionSelect.classList.remove(['horizontal','vertical'])
+
+        imagePreview.addEventListener('load', () => {
+
+          const screenAspectRatio = Number(positionSelect.getAttribute('data-screen-aspect-ratio'))
+          const imageAspectRatio = imagePreview.offsetHeight / imagePreview.offsetWidth
+
+          positionSelect.style = `--position-width: ${imagePreview.offsetWidth}px; --position-height: ${imagePreview.offsetHeight}px; --screen-aspect-ratio: ${screenAspectRatio};`
+
+          console.log(imageAspectRatio, screenAspectRatio, imageAspectRatio > screenAspectRatio)
+  
+          if (imageAspectRatio > screenAspectRatio) {
+            positionSelect.classList.add('vertical')
+            positionSelect.style.top = `${(imagePreview.offsetHeight / 2) - ((imagePreview.offsetWidth * screenAspectRatio) / 2)}px`
+          } else {
+            positionSelect.classList.add('horizontal')
+            positionSelect.style.left = `${(imagePreview.offsetWidth / 2) - ((imagePreview.offsetHeight / screenAspectRatio) / 2)}px`
+          }
+        })
       }
     })
     .finally(res => {
       submitButton.removeAttribute('disabled')
+      submitButton.classList.remove('loading')
+      submitButton.innerText = 'Submit'
+    })
+  })
+
+  window.addEventListener('load', () => {
+    fetch(
+      '/init',
+      {
+        method: 'GET',
+      }
+    )
+    .then(r => r.json())
+    .then(r => {
+      const { widthAspectRatio } = r.screen
+      const positionSelect = 
+      document.querySelector('.position-select')
+      positionSelect.setAttribute('data-screen-aspect-ratio', widthAspectRatio)
     })
   })
 
@@ -59,12 +106,13 @@
     })
   })
 
-  document.querySelector('input[type="range"]')
-    .addEventListener('change', ({ currentTarget }) => {
+  document.querySelectorAll('input[type="range"]').forEach(r => {
+    r.addEventListener('change', ({ currentTarget }) => {
       const { value } = currentTarget
       const target = currentTarget.getAttribute('id')
       document.querySelector(`label[for="${target}"] > [data-value]`).innerText = value
     })
+  })
 
   document.querySelector('button[data-request="video-stop"]')
     .addEventListener('click', () => {

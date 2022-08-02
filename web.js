@@ -1,6 +1,6 @@
 const express = require('express')
 const formData = require('express-form-data')
-const { webContents } = require('electron')
+const { webContents, screen } = require('electron')
 const { tempDir, cleanDir, joinPath } = require('./utils')
 
 const app = express()
@@ -53,6 +53,18 @@ app.post('/send/:request', (req, res) => {
     code: 200,
     status: 'ok',
     body,
+  })
+})
+
+app.get('/init', (req, res) => {
+  const primaryDisplay = screen.getPrimaryDisplay()
+  res.json({
+    screen: {
+      witdh: primaryDisplay.size.width,
+      height: primaryDisplay.size.height,
+      widthAspectRatio: (primaryDisplay.size.height / primaryDisplay.size.width),
+      displayFrequency: primaryDisplay.displayFrequency,
+    }
   })
 })
 
