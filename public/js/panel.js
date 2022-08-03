@@ -47,7 +47,7 @@
         const positionSelect = 
         document.querySelector('.position-select')
 
-        positionSelect.classList.remove(['horizontal','vertical'])
+        positionSelect.classList.remove('horizontal','vertical')
 
         imagePreview.addEventListener('load', () => {
 
@@ -55,8 +55,6 @@
           const imageAspectRatio = imagePreview.offsetHeight / imagePreview.offsetWidth
 
           positionSelect.style = `--position-width: ${imagePreview.offsetWidth}px; --position-height: ${imagePreview.offsetHeight}px; --screen-aspect-ratio: ${screenAspectRatio};`
-
-          console.log(imageAspectRatio, screenAspectRatio, imageAspectRatio > screenAspectRatio)
   
           if (imageAspectRatio > screenAspectRatio) {
             positionSelect.classList.add('vertical')
@@ -119,6 +117,71 @@
       document.querySelector('button[data-request="video-pause"]').classList.add('hidden')
       document.querySelector('button[data-request="video-play"]').classList.remove('hidden')
     })
+  
+  const onDragX = ({ currentTarget, movementX }) => {
+    const {
+      left: targetLeft,
+      width: targetWidth,
+    } = window.getComputedStyle(currentTarget)
+
+    const {
+      width: parentWidth,
+    } = window.getComputedStyle(currentTarget.parentNode)
+
+    const targetLeftInt = parseInt(targetLeft)
+    const targetWidthInt = parseInt(targetWidth)
+    const parentWidthInt = parseInt(parentWidth)
+    const finalPositionX = targetLeftInt + movementX
+
+    if(
+      finalPositionX < 0 
+      || (finalPositionX + targetWidthInt) > parentWidthInt
+    ) {
+      return
+    }
+    
+    currentTarget.style.left = `${finalPositionX}px`
+  }
+
+  const onDragY = ({ currentTarget, movementY }) => {
+    const {
+      top: targetTop,
+      height: targetHeight,
+    } = window.getComputedStyle(currentTarget)
+
+    const {
+      height: parentHeight,
+    } = window.getComputedStyle(currentTarget.parentNode)
+
+    const targetTopInt = parseInt(targetTop)
+    const targetHeightInt = parseInt(targetHeight)
+    const parentHeightInt = parseInt(parentHeight)
+    const finalPositionY = targetTopInt + movementY
+
+    if(
+      finalPositionY <= 0
+      || (finalPositionY + targetHeightInt) >= parentHeightInt
+    ) {
+      return
+    }
+    
+    currentTarget.style.top = `${finalPositionY}px`
+  }
+  
+  document.querySelectorAll('[data-draggable]').forEach(drag => {
+    drag.addEventListener('mousedown', () => {
+      drag.addEventListener('mousemove', onDragX)
+      drag.addEventListener('mousemove', onDragY)
+    })
+
+    const events = ['mouseup','mouseleave']
+    events.forEach(ev => {
+      drag.addEventListener(ev, () => {
+        drag.removeEventListener('mousemove', onDragX)
+        drag.removeEventListener('mousemove', onDragY)
+      })
+    })
+  })
 
   const sendRequest = async ({ currentTarget }) => {
     const req = currentTarget.getAttribute('data-request')

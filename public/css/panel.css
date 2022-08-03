@@ -27,7 +27,12 @@
 
 h1 {
   font-size: 2rem;
+  line-height: 1;
   margin-bottom: 1rem;
+}
+
+hr {
+  margin: .5rem 0;
 }
 
 label {
@@ -76,15 +81,23 @@ button.loading::before {
 }
 
 .image-controls {
-  padding: 0 0.25rem;
+  padding: 0 0 0 1rem;
 }
 
 .image-preview {
   position: relative;
+  z-index: 10;
 }
 
 img.preview {
+  pointer-events: none;
   width: 100%;
+  z-index: 0;
+  user-select: none;
+  -drag: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
 }
 
 .position-select {
@@ -95,6 +108,7 @@ img.preview {
   box-sizing: border-box;
   box-shadow: inset 0 0 0px 1px #FFFFFF;
   cursor: grab;
+  z-index: 20;
 }
 
 .position-select:active {
