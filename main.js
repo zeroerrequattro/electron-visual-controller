@@ -61,9 +61,13 @@ app.whenReady().then(async () => {
   ipcMain.on('tunnel:hide', () => { win.hide() })
   ipcMain.on('tunnel:show', () => { win.show() })
 
-  powerMonitor.on('suspend', tunnel.close)
-  powerMonitor.on('resume', async () => {
+  powerMonitor.on('suspend', () => {
+    console.log('closing tunnel')
     cleanDir()
+    tunnel.close()
+  })
+  powerMonitor.on('resume', async () => {
+    console.log('reopening tunnel')
     tunnel = await tunnelInit()
   })
   powerMonitor.on('shutdown', cleanQuit)
