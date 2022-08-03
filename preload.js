@@ -41,6 +41,14 @@ ipcRenderer.on('tunnel:video-speed', (e, { value }) => {
   video.playbackRate = value
 })
 
+ipcRenderer.on('tunnel:image-position', (e, { posX, posY })=> {
+  console.log(posX, posY)
+  if(posX === undefined || posY === undefined) {
+    return
+  }
+  document.querySelector('.image.contain').style.backgroundPosition = `${posX}% ${posY}%`
+})
+
 ipcRenderer.on('tunnel:image-opacity', (e, { value }) => {
   document.querySelector('.image.contain').style.opacity = value
 })
@@ -58,6 +66,7 @@ ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } })
     case 'image':
       const imgContain = document.querySelector('.image.contain')
       imgContain.style.backgroundImage = `url(${unixPath})`
+      imgContain.style.backgroundPosition = '50% 50%'
       imgContain.style.display = 'block'
       imgContain.style.opacity = opacity
       break

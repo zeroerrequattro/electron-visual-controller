@@ -174,11 +174,39 @@
       drag.addEventListener('mousemove', onDragY)
     })
 
-    const events = ['mouseup','mouseleave']
-    events.forEach(ev => {
-      drag.addEventListener(ev, () => {
-        drag.removeEventListener('mousemove', onDragX)
-        drag.removeEventListener('mousemove', onDragY)
+    drag.addEventListener('mouseup', async () => {
+      drag.removeEventListener('mousemove', onDragX)
+      drag.removeEventListener('mousemove', onDragY)
+
+      const req = drag.getAttribute('data-request')
+
+      if(!req) {
+        return
+      }
+
+      const {
+        left: targetLeft,
+        top: targetTop,
+        width: targetWidth,
+        height: targetHeight,
+      } = window.getComputedStyle(drag)
+      const {
+        width: parentWidth,
+        height: parentHeight,
+      } = window.getComputedStyle(drag.parentNode)
+
+      const posX = ((parseInt(targetLeft) + (parseInt(targetWidth) / 2)) / parseInt(parentWidth)) * 100
+      const posY = ((parseInt(targetTop) + (parseInt(targetHeight) / 2)) / parseInt(parentHeight)) * 100
+
+      console.log(posX, posY)
+
+      await fetch(`/send/${req}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ posX, posY })
       })
     })
   })
