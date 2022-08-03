@@ -9,7 +9,7 @@
     })
     document.querySelector('button[data-request="video-pause"]').classList.remove('hidden')
     document.querySelector('button[data-request="video-play"]').classList.add('hidden')
-    document.querySelector('input[data-request="video-opacity"]').value = 0.05
+    document.querySelector('input[data-request*="opacity"]').value = 0.05
     document.querySelector('input[data-request="video-speed"]').value = 1
   }
 
@@ -197,8 +197,6 @@
 
       const posX = ((parseInt(targetLeft) + (parseInt(targetWidth) / 2)) / parseInt(parentWidth)) * 100
       const posY = ((parseInt(targetTop) + (parseInt(targetHeight) / 2)) / parseInt(parentHeight)) * 100
-
-      console.log(posX, posY)
 
       await fetch(`/send/${req}`, {
         method: 'POST',
