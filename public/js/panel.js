@@ -34,7 +34,7 @@
     .then(r => r.json())
     .then(r => {
       const { files: { file: { type, path }}} = r
-      const [ currentFilename ] = path.split('/').splice(-1,1)
+      const [ currentFilename ] = path.replace(/\\/g,'/').split('/').splice(-1,1)
 
       if (type.includes('video')) {
         document.querySelector('.video-player').classList.remove('hidden')
