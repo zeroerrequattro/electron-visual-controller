@@ -53,6 +53,10 @@ ipcRenderer.on('tunnel:image-opacity', (e, { value }) => {
   document.querySelector('.image.contain').style.opacity = value
 })
 
+ipcRenderer.on('tunnel:image-bgcolor', (e, { value }) => {
+  document.querySelector('.image.contain').style.backgroundColor = value
+})
+
 ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } }) => {
   const { type, path } = file
   const [ fileType, ext ] = type.split('/')

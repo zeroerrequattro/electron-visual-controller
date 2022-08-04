@@ -5,3 +5,4 @@ build/
 yarn.lock
 temp/*
 dist/
+public/temp/*

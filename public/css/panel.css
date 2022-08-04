@@ -57,6 +57,11 @@ input[type="range"] {
   padding: .5rem 0;
 }
 
+input[type="color"] {
+  width: 4rem;
+  padding: 0;
+}
+
 button[type="submit"] {
   display: flex;
   justify-content: center;
@@ -123,6 +128,10 @@ img.preview {
 .position-select.horizontal {
   width: calc(var(--position-height) / var(--screen-aspect-ratio));
   height: var(--position-height)
+}
+
+.w-auto {
+  width: auto;
 }
 
 .w-full {
