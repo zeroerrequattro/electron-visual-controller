@@ -57,6 +57,10 @@ ipcRenderer.on('tunnel:image-bgcolor', (e, { value }) => {
   document.querySelector('.image.contain').style.backgroundColor = value
 })
 
+ipcRenderer.on('tunnel:image-blend', (e, { value }) => {
+  document.querySelector('.image.contain').style.backgroundBlendMode = value
+})
+
 ipcRenderer.on('tunnel:request', (event, { body: { opacity }, files: { file } }) => {
   const { type, path } = file
   const [ fileType, ext ] = type.split('/')

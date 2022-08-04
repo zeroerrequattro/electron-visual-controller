@@ -231,7 +231,10 @@
   }
 
   document.querySelectorAll('[data-request]').forEach(r => {
-    r.addEventListener('click', sendRequest)
-    // r.addEventListener('change', sendRequest)
+    if (r.tagName === 'select') {
+      r.addEventListener('change', sendRequest)
+    } else {
+      r.addEventListener('click', sendRequest)
+    }
   })
 })()
